@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইমেজ গ্যালারি</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        img {
+            width: 80%;
+            max-width: 600px;
+            border: 5px solid #fff;
+            border-radius: 10px;
+        }
+        .back-link {
+            display: block;
+            margin-top: 30px;
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>এটি ইমেজ ফোল্ডারের ভেতরের পেজ</h1>
+    <p>নিচে আপনার 'puja.jpg' ছবিটি বড় করে দেখানো হলো:</p>
+
+    <!-- যেহেতু এই ফাইলটি image ফোল্ডারেই আছে, তাই সরাসরি ছবির নাম দিলেই হবে -->
+    <img src="puja.jpg" alt="Puja Photo">
+
+    <!-- মেইন পেজে ফিরে যাওয়ার লিঙ্ক -->
+    <a href="../index.html" class="back-link">← মেইন পেজে ফিরে যান</a>
+
+</body>
+</html>
