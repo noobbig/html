@@ -3,145 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujol | Puja</title>
+    <title>Sujol | Puja Special</title>
     <style>
         body {
             margin: 0;
-            padding: 30px 10px;
-            font-family: sans-serif;
-            background-color: #000; 
+            padding: 0;
+            height: 100vh;
+            background-color: #000;
             color: white;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #ffd700;
-        }
-
-        .main-wrapper {
-            position: relative;
-            display: inline-block;
-            width: 90%;
-            max-width: 600px;
             cursor: pointer;
         }
 
-        /* পর্দার ওপরের লেখা */
-        #overlay-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            font-size: 22px;
+        /* স্ক্রিনের মাঝখানের লেখা */
+        #main-text {
+            font-size: 28px;
             font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
-            width: 100%;
-            pointer-events: none; /* যাতে লেখার ওপর ক্লিক করলেও কাজ করে */
-            opacity: 0;
-            transition: opacity 1s;
+            color: #ffd700;
+            text-align: center;
+            z-index: 10;
+            transition: opacity 1.5s, transform 1.5s;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
         }
 
         .img-container {
-            width: 100%;
-            overflow: hidden;
-            border-radius: 15px;
-            background: #000;
-            border: 2px solid #333;
+            position: relative;
+            width: 85%;
+            max-width: 550px;
+            margin-top: 20px;
         }
 
         img {
             width: 100%;
             height: auto;
-            border: 5px solid #fff;
-            border-radius: 15px;
+            border: 4px solid #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+            /* শুরুতে পর্দা বন্ধ */
             clip-path: inset(0 50% 0 50%); 
-            opacity: 0; 
-            display: block;
+            opacity: 0;
         }
 
-        /* ৫ সেকেন্ড পর পর্দা খোলার অ্যানিমেশন */
-        .curtain-action {
-            animation: curtainOpen 30s linear forwards;
+        /* ৫ সেকেন্ড পর গান চলা অবস্থায় এই ক্লাসটি কাজ করবে */
+        .curtain-open {
+            animation: curtainAction 30s linear forwards;
         }
 
-        @keyframes curtainOpen {
-            0% { clip-path: inset(0 50% 0 50%); opacity: 0.5; transform: scale(1.1); }
-            100% { clip-path: inset(0 0 0 0); opacity: 1; transform: scale(1); }
+        @keyframes curtainAction {
+            0% { 
+                clip-path: inset(0 50% 0 50%); 
+                opacity: 0.5; 
+                transform: scale(1.1);
+            }
+            100% { 
+                clip-path: inset(0 0 0 0); 
+                opacity: 1; 
+                transform: scale(1);
+            }
         }
 
-        /* লেখা মিলিয়ে যাওয়ার অ্যানিমেশন */
-        .fade-out {
-            animation: fadeOutText 2s forwards;
+        .footer-msg {
+            position: absolute;
+            bottom: 30px;
+            font-size: 14px;
+            color: #444;
         }
-
-        @keyframes fadeOutText {
-            from { opacity: 1; }
-            to { opacity: 0; visibility: hidden; }
-        }
-
-        .instruction {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #00d4ff;
-            font-weight: bold;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .back-link { margin-top: 50px; display: block; color: #555; text-decoration: none; font-size: 14px; }
     </style>
 </head>
-<body>
+<body onclick="startShow()" ontouchstart="startShow()">
 
-    <h1>আপনার পূজা</h1>
-
-    <div class="main-wrapper" id="playTrigger">
-        <!-- পর্দার ওপরের লেখা -->
-        <div id="overlay-text">পূজা স্পেশাল প্রেজেন্টেশন...</div>
-        
-        <div class="img-container">
-            <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
-        </div>
+    <!-- পর্দা খোলার আগে এই লেখাটি দেখা যাবে -->
+    <div id="main-text">
+        শুভ শারদীয়া পূজা <br>
+        <span style="font-size: 16px; color: #00d4ff;">স্ক্রিনে টাচ করুন</span>
     </div>
 
-    <p id="msg" class="instruction">শুরু করতে এখানে ক্লিক করুন</p>
+    <div class="img-container">
+        <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
+    </div>
 
+    <!-- গানটি লুপে চলতেই থাকবে -->
     <audio id="bgMusic" loop>
         <source src="flute.mp3" type="audio/mpeg">
     </audio>
 
-    <a href="../index.html" class="back-link">← মেইন পেজে ফিরে যান</a>
+    <div class="footer-msg">পুজা স্পেশাল প্রেজেন্টেশন</div>
 
     <script>
         var music = document.getElementById("bgMusic");
         var pic = document.getElementById("pujaPic");
-        var msg = document.getElementById("msg");
-        var overlay = document.getElementById("overlay-text");
-        var trigger = document.getElementById("playTrigger");
+        var text = document.getElementById("main-text");
+        var isStarted = false;
 
         function startShow() {
-            // ১. ক্লিক করার সাথে সাথে গান শুরু এবং লেখা দেখা যাবে
-            music.play();
-            overlay.style.opacity = "1";
-            msg.innerText = "গান শুরু হয়েছে...";
-            msg.style.animation = "none";
+            if (isStarted) return; 
+            isStarted = true;
 
-            // ২. ৫ সেকেন্ড পর পর্দা খুলবে এবং লেখাটি ধীরে ধীরে মুছে যাবে
+            // ১. টাচ করার সাথে সাথে গান শুরু হবে এবং তা বাজতেই থাকবে
+            music.play().catch(function(error) {
+                console.log("Music play failed:", error);
+            });
+
+            // ২. স্ক্রিনের টেক্সট পরিবর্তন
+            text.innerHTML = "অপেক্ষা করুন... <br> পর্দা খুলছে";
+            text.style.transform = "scale(1.2)";
+
+            // ৩. ঠিক ৫ সেকেন্ড পর পর্দা খোলা শুরু হবে (গান কিন্তু বন্ধ হবে না)
             setTimeout(function() {
-                pic.classList.add("curtain-action");
-                overlay.classList.add("fade-out");
-                msg.innerText = "শুভ পূজা ✨";
-            }, 5000); 
+                pic.classList.add("curtain-open");
+                text.style.opacity = "0"; // পর্দা খোলার সময় লেখাটি হালকা হয়ে মিশে যাবে
+            }, 5000);
         }
-
-        trigger.addEventListener('click', startShow, { once: true });
     </script>
-
 </body>
 </html>
