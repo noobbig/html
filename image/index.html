@@ -43,7 +43,7 @@
             display: block;
         }
 
-        /* ছবির ওপরে থাকা ইনস্ট্রাকশন */
+        /* ছবির ওপরে থাকা ইনস্ট্রাকশন এবং নিচের মেসেজের কমন স্টাইল */
         .instruction {
             position: absolute;
             top: 50%;
@@ -52,7 +52,7 @@
             width: 100%;
             margin: 0;
             font-size: 20px;
-            color: #00d4ff;
+            color: #00d4ff; /* আগের সায়ান ব্লু কালার */
             font-weight: bold;
             z-index: 10;
             animation: blink 1.5s infinite;
@@ -60,14 +60,14 @@
             pointer-events: none;
         }
 
-        /* ছবির নিচে আসার জন্য নতুন স্টাইল */
+        /* ছবির নিচে আসার জন্য স্টাইল */
         .msg-bottom {
             position: relative !important;
             top: 0 !important;
             left: 0 !important;
             transform: none !important;
-            margin-top: 20px !important;
-            color: #ffd700 !important;
+            margin-top: 25px !important;
+            display: block !important;
             animation: none !important;
         }
 
@@ -103,7 +103,7 @@
         <p id="msg" class="instruction">শুরু করতে এখানে ক্লিক করুন</p>
     </div>
 
-    <!-- ছবির নিচে আসার জন্য একটি খালি জায়গা রাখা হলো -->
+    <!-- ছবির ঠিক নিচে লেখাটি দেখানোর কন্টেইনার -->
     <div id="bottomMsgContainer"></div>
 
     <audio id="bgMusic" loop>
@@ -122,17 +122,17 @@
         function startShow() {
             music.play().catch(e => console.log("Music error:", e));
             
-            // ক্লিক করার সাথে সাথে উপরের টেক্সট ভ্যানিশ
+            // ক্লিক করার সাথে সাথে মাঝখানের টেক্সট ভ্যানিশ
             msg.style.display = "none";
 
             setTimeout(function() {
+                // পর্দা খোলা শুরু
                 pic.classList.add("curtain-action");
                 
-                // লেখাটিকে ছবির কন্টেইনার থেকে বের করে নিচে নিয়ে আসা
-                bottomContainer.appendChild(msg); 
+                // টেক্সট আপডেট করে ছবির নিচে পাঠিয়ে দেওয়া
                 msg.innerText = "Kaisa Laga Mera Majak✨";
+                bottomContainer.appendChild(msg); 
                 msg.classList.add("msg-bottom");
-                msg.style.display = "block";
             }, 5000);
         }
 
