@@ -9,7 +9,7 @@
             margin: 0;
             padding: 30px 10px;
             font-family: sans-serif;
-            background-color: #000; 
+            background-color: #000;
             color: white;
             text-align: center;
             overflow-x: hidden;
@@ -21,54 +21,53 @@
             color: #ffd700;
         }
 
+        /* কন্টেইনারকে রিলেটিভ করা হয়েছে যাতে লেখা ছবির ওপর বসে */
         .img-container {
+            position: relative;
             display: inline-block;
             width: 90%;
             max-width: 600px;
             cursor: pointer;
             overflow: hidden;
             border-radius: 15px;
-            background: #000;
+            background: #111;
         }
 
         img {
-            width: 90%;
+            width: 100%;
             height: auto;
             border: 5px solid #fff;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.9);
-            
-            /* শুরুতে পর্দা সম্পূর্ণ বন্ধ */
-            clip-path: inset(0 50% 0 50%); 
-            opacity: 0; 
+            clip-path: inset(0 50% 0 50%);
+            opacity: 0;
             display: block;
         }
 
-        /* ৫ সেকেন্ড পর এই ক্লাসটি যুক্ত হবে */
+        /* ছবির ওপরের টেক্সট স্টাইল */
+        .instruction {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            margin: 0;
+            font-size: 20px;
+            color: #00d4ff;
+            font-weight: bold;
+            z-index: 10;
+            animation: blink 1.5s infinite;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            pointer-events: none; /* ক্লিক যেন কন্টেইনারে লাগে */
+        }
+
         .curtain-action {
             animation: curtainOpen 30s linear forwards;
         }
 
         @keyframes curtainOpen {
-            0% {
-                clip-path: inset(0 50% 0 50%);
-                opacity: 0.5;
-                transform: scale(1.1);
-            }
-            100% {
-                clip-path: inset(0 0 0 0);
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .instruction {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #00d4ff;
-            font-weight: bold;
-            cursor: pointer;
-            animation: blink 1.5s infinite;
+            0% { clip-path: inset(0 50% 0 50%); opacity: 0.5; transform: scale(1.1); }
+            100% { clip-path: inset(0 0 0 0); opacity: 1; transform: scale(1); }
         }
 
         @keyframes blink {
@@ -91,11 +90,9 @@
 
     <div class="img-container" id="playTrigger">
         <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
+        <p id="msg" class="instruction">শুরু করতে এখানে ক্লিক করুন</p>
     </div>
 
-    <p id="msg" class="instruction">শুরু করতে এখানে ক্লিক করুন</p>
-
-    <!-- পুরো গান বাজার জন্য loop রাখা হয়েছে -->
     <audio id="bgMusic" loop>
         <source src="flute.mp3" type="audio/mpeg">
     </audio>
@@ -109,22 +106,25 @@
         var trigger = document.getElementById("playTrigger");
 
         function startShow() {
-            // ১. ক্লিক করার সাথে সাথে গান শুরু হবে (যা শেষ পর্যন্ত চলবে)
+            // ১. ক্লিক করলে গান বাজবে
             music.play().catch(e => console.log("Music error:", e));
-            
-            msg.innerText = "   ";
-            msg.style.animation = "none";
 
-            // ২. গান শুরু হওয়ার ঠিক ৫ সেকেন্ড পর পর্দা খোলা শুরু হবে
+            // ২. ক্লিক করার সাথে সাথে টেক্সট একদম ভ্যানিশ হয়ে যাবে
+            msg.style.display = "none";
+
+            // ৩. ৫ সেকেন্ড পর পর্দা খুলবে এবং নতুন টেক্সট আসবে
             setTimeout(function() {
                 pic.classList.add("curtain-action");
+                
+                // পর্দা খোলার সময় মেসেজটি আবার দেখাবে
                 msg.innerText = "Kaisa Laga Mera Majak✨";
-            }, 5000); 
+                msg.style.display = "block";
+                msg.style.animation = "none";
+                msg.style.top = "90%"; // মেসেজটি ছবির নিচে নামিয়ে দেওয়া হলো
+            }, 5000);
         }
 
-        // ইউজার ক্লিক করলে পুরো প্রসেস শুরু হবে
         trigger.addEventListener('click', startShow, { once: true });
-        msg.addEventListener('click', startShow, { once: true });
     </script>
 
 </body>
