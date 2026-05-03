@@ -18,14 +18,16 @@
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
-            animation: fadeInDown 1s ease-in;
         }
 
         .img-container {
             display: inline-block;
             width: 90%;
             max-width: 600px;
-            cursor: pointer; /* ছবির ওপর মাউস নিলে হাতের চিহ্ন আসবে */
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 15px;
+            background: #000; /* পর্দা খোলার আগে ব্যাকগ্রাউন্ড কালো থাকবে */
         }
 
         img {
@@ -34,46 +36,48 @@
             border: 5px solid #fff;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-            animation: entrance 1.5s ease-out, floating 3s ease-in-out infinite;
+            /* শুরুতে পর্দা বন্ধ থাকবে */
+            clip-path: inset(0 50% 0 50%); 
             transition: 0.4s;
+            display: block;
         }
 
-        /* স্পর্শ করলে বা মাউস নিলে ছবিটা হালকা গ্লো করবে */
-        img:hover {
-            transform: scale(1.02);
-            border-color: #00d4ff;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        /* এই ক্লাসটি জাভাস্ক্রিপ্ট দিয়ে যুক্ত করা হবে */
+        .start-animation {
+            animation: curtainOpen 30s linear forwards;
+        }
+
+        @keyframes curtainOpen {
+            0% {
+                clip-path: inset(0 50% 0 50%);
+                transform: scale(1.1);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+                transform: scale(1);
+            }
         }
 
         .instruction {
             margin-top: 15px;
-            font-size: 14px;
-            color: #888;
-            font-style: italic;
+            font-size: 16px;
+            color: #00d4ff;
+            font-weight: bold;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
         }
 
         .back-link {
             margin-top: 50px;
             display: block;
-            color: #00d4ff;
+            color: #888;
             text-decoration: none;
-            font-size: 16px;
-        }
-
-        /* অ্যানিমেশনসমূহ */
-        @keyframes entrance {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            font-size: 14px;
         }
     </style>
 </head>
@@ -81,12 +85,12 @@
 
     <h1>আপনার পূজা</h1>
 
-    <div class="img-container">
-        <!-- ছবিতে স্পর্শ করলেই গান বাজবে -->
+    <div class="img-container" id="mainContainer">
+        <!-- ছবিতে স্পর্শ করলেই গান বাজবে এবং পর্দা সরবে -->
         <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
     </div>
 
-    <p class="instruction">মিউজিক শুনতে ছবিতে স্পর্শ করুন</p>
+    <p id="msg" class="instruction">শুরু করতে এখানে ক্লিক করুন</p>
 
     <audio id="bgMusic" loop>
         <source src="flute.mp3" type="audio/mpeg">
@@ -97,22 +101,25 @@
     <script>
         var music = document.getElementById("bgMusic");
         var pic = document.getElementById("pujaPic");
+        var msg = document.getElementById("msg");
 
-        // মিউজিক চালু করার ফাংশন
-        function playMusic() {
+        function startEverything() {
+            // গান প্লে করা
             music.play().catch(function(error) {
                 console.log("Play failed:", error);
             });
+
+            // পর্দার অ্যানিমেশন শুরু করা
+            pic.classList.add("start-animation");
+
+            // টেক্সট পরিবর্তন বা হাইড করা
+            msg.innerText = "উপভোগ করুন...";
+            msg.style.animation = "none"; 
         }
 
-        // ছবির ওপর মাউস নিলে (Desktop)
-        pic.addEventListener('mouseenter', playMusic, { once: true });
-
-        // ছবিতে স্পর্শ করলে (Mobile)
-        pic.addEventListener('touchstart', playMusic, { once: true });
-        
-        // ব্যাকআপ: যদি কেউ সরাসরি ক্লিক করে
-        pic.addEventListener('click', playMusic, { once: true });
+        // ক্লিক বা টাচ করলে একসাথে শুরু হবে
+        document.getElementById("mainContainer").addEventListener('click', startEverything, { once: true });
+        document.getElementById("mainContainer").addEventListener('touchstart', startEverything, { once: true });
     </script>
 
 </body>
