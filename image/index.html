@@ -3,49 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujol</title>
+    <title>Sujol | Puja Animation</title>
     <style>
         body {
-            margin-top:30px;
-            font-family: sans-serif;
-            background-color: #333;
+            margin: 0;
+            padding: 30px 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
             color: white;
             text-align: center;
+            overflow-x: hidden;
         }
-        img {
-            margin-top:30px;
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            /* লেখার জন্য এনিমেশন */
+            animation: fadeInDown 1s ease-in;
+        }
+
+        /* ছবির কন্টেইনার */
+        .img-container {
+            display: inline-block;
             width: 90%;
-            height:100%;
-            border: 5px solid #fff;
-            border-radius: 10px;
+            max-width: 600px;
+            perspective: 1000px; /* 3D ইফেক্টের জন্য */
         }
+
+        img {
+            width: 100%;
+            height: auto;
+            border: 5px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            
+            /* এনিমেশন যুক্ত করা হয়েছে */
+            animation: 
+                entrance 1.5s ease-out, 
+                floating 3s ease-in-out infinite;
+            
+            transition: transform 0.3s ease;
+        }
+
+        /* মাউস নিলে ছবি বড় হবে */
+        img:hover {
+            transform: scale(1.03);
+            border-color: #00d4ff;
+        }
+
         .back-link {
-            margin-top:60px;
-            display: block;
+            margin-top: 50px;
+            display: inline-block;
             color: #00d4ff;
             text-decoration: none;
             font-size: 18px;
+            transition: 0.3s;
+            animation: fadeIn 2s ease-in;
         }
-        
-        h1 {
-          font-size:20px;
-         }
-        
-        
-        
-        
+
+        .back-link:hover {
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        /* --- অ্যানিমেশন কী-ফ্রেম সমূহ --- */
+
+        /* ১. শুরুতে ছবিটা জুম হয়ে আসবে */
+        @keyframes entrance {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* ২. ছবিটা সবসময় ভাসতে থাকবে */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* ৩. উপর থেকে লেখা আসবে */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
     </style>
 </head>
 <body>
 
     <h1>আপনার পূজা</h1>
-    
 
-    <!-- যেহেতু এই ফাইলটি image ফোল্ডারেই আছে, তাই সরাসরি ছবির নাম দিলেই হবে -->
-    <img src="puja.jpg" alt="Puja Photo">
+    <div class="img-container">
+        <!-- আপনার ছবির নাম পূজা.jpg ঠিক থাকলে এটি কাজ করবে -->
+        <img src="puja.jpg" alt="Puja Photo">
+    </div>
 
-    <!-- মেইন পেজে ফিরে যাওয়ার লিঙ্ক -->
+    <br>
     <a href="../index.html" class="back-link">← মেইন পেজে ফিরে যান</a>
 
 </body>
