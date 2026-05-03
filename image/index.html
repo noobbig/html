@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujol | Puja Animation & Music</title>
+    <title>Sujol | Puja</title>
     <style>
         body {
             margin: 0;
             padding: 30px 10px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: sans-serif;
             background-color: #1a1a1a;
             color: white;
             text-align: center;
@@ -25,6 +25,7 @@
             display: inline-block;
             width: 90%;
             max-width: 600px;
+            cursor: pointer; /* ছবির ওপর মাউস নিলে হাতের চিহ্ন আসবে */
         }
 
         img {
@@ -34,27 +35,27 @@
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.7);
             animation: entrance 1.5s ease-out, floating 3s ease-in-out infinite;
+            transition: 0.4s;
         }
 
-        /* মিউজিক বাটন স্টাইল */
-        #musicBtn {
-            margin-top: 25px;
-            padding: 12px 25px;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            background: #00d4ff;
-            color: #000;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(0,212,255,0.3);
-            transition: 0.3s;
+        /* স্পর্শ করলে বা মাউস নিলে ছবিটা হালকা গ্লো করবে */
+        img:hover {
+            transform: scale(1.02);
+            border-color: #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        }
+
+        .instruction {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
         }
 
         .back-link {
-            margin-top: 40px;
+            margin-top: 50px;
             display: block;
-            color: #aaa;
+            color: #00d4ff;
             text-decoration: none;
             font-size: 16px;
         }
@@ -66,9 +67,13 @@
         }
 
         @keyframes floating {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -77,43 +82,37 @@
     <h1>আপনার পূজা</h1>
 
     <div class="img-container">
-        <img src="puja.jpg" alt="Puja Photo">
+        <!-- ছবিতে স্পর্শ করলেই গান বাজবে -->
+        <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
     </div>
 
-    <br>
+    <p class="instruction">মিউজিক শুনতে ছবিতে স্পর্শ করুন</p>
 
-    <!-- অনলাইন মিউজিক প্লেয়ার -->
     <audio id="bgMusic" loop>
-        <!-- এখানে একটি অনলাইন স্যাম্পল মিউজিক লিঙ্ক দেওয়া হয়েছে -->
-        <source src="https://soundhelix.com" type="audio/mpeg">
+        <source src="flute.mp3" type="audio/mpeg">
     </audio>
-
-    <button id="musicBtn" onclick="toggleMusic()">🎵 মিউজিক চালান</button>
 
     <a href="../index.html" class="back-link">← মেইন পেজে ফিরে যান</a>
 
     <script>
         var music = document.getElementById("bgMusic");
-        var btn = document.getElementById("musicBtn");
+        var pic = document.getElementById("pujaPic");
 
-        function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                btn.innerHTML = "⏸ মিউজিক থামান";
-                btn.style.background = "#ff4b2b";
-            } else {
-                music.pause();
-                btn.innerHTML = "🎵 মিউজিক চালান";
-                btn.style.background = "#00d4ff";
-            }
+        // মিউজিক চালু করার ফাংশন
+        function playMusic() {
+            music.play().catch(function(error) {
+                console.log("Play failed:", error);
+            });
         }
 
-        // স্ক্রিনের যেকোনো জায়গায় প্রথম ক্লিকের সাথে গান শুরু হবে
-        window.addEventListener('click', function() {
-            if (music.paused) {
-                toggleMusic();
-            }
-        }, { once: true });
+        // ছবির ওপর মাউস নিলে (Desktop)
+        pic.addEventListener('mouseenter', playMusic, { once: true });
+
+        // ছবিতে স্পর্শ করলে (Mobile)
+        pic.addEventListener('touchstart', playMusic, { once: true });
+        
+        // ব্যাকআপ: যদি কেউ সরাসরি ক্লিক করে
+        pic.addEventListener('click', playMusic, { once: true });
     </script>
 
 </body>
