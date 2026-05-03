@@ -9,7 +9,7 @@
             margin: 0;
             padding: 30px 10px;
             font-family: sans-serif;
-            background-color: #1a1a1a;
+            background-color: #000; 
             color: white;
             text-align: center;
             overflow-x: hidden;
@@ -18,6 +18,7 @@
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
+            color: #ffd700;
         }
 
         .img-container {
@@ -27,7 +28,7 @@
             cursor: pointer;
             overflow: hidden;
             border-radius: 15px;
-            background: #000; /* পর্দা খোলার আগে ব্যাকগ্রাউন্ড কালো থাকবে */
+            background: #000;
         }
 
         img {
@@ -35,47 +36,50 @@
             height: auto;
             border: 5px solid #fff;
             border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-            /* শুরুতে পর্দা বন্ধ থাকবে */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            
+            /* শুরুতে পর্দা সম্পূর্ণ বন্ধ */
             clip-path: inset(0 50% 0 50%); 
-            transition: 0.4s;
+            opacity: 0; 
             display: block;
         }
 
-        /* এই ক্লাসটি জাভাস্ক্রিপ্ট দিয়ে যুক্ত করা হবে */
-        .start-animation {
+        /* ৫ সেকেন্ড পর এই ক্লাসটি যুক্ত হবে */
+        .curtain-action {
             animation: curtainOpen 30s linear forwards;
         }
 
         @keyframes curtainOpen {
             0% {
                 clip-path: inset(0 50% 0 50%);
+                opacity: 0.5;
                 transform: scale(1.1);
             }
             100% {
                 clip-path: inset(0 0 0 0);
+                opacity: 1;
                 transform: scale(1);
             }
         }
 
         .instruction {
-            margin-top: 15px;
-            font-size: 16px;
+            margin-top: 20px;
+            font-size: 18px;
             color: #00d4ff;
             font-weight: bold;
+            cursor: pointer;
             animation: blink 1.5s infinite;
         }
 
         @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
 
         .back-link {
             margin-top: 50px;
             display: block;
-            color: #888;
+            color: #555;
             text-decoration: none;
             font-size: 14px;
         }
@@ -85,13 +89,13 @@
 
     <h1>আপনার পূজা</h1>
 
-    <div class="img-container" id="mainContainer">
-        <!-- ছবিতে স্পর্শ করলেই গান বাজবে এবং পর্দা সরবে -->
+    <div class="img-container" id="playTrigger">
         <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
     </div>
 
     <p id="msg" class="instruction">শুরু করতে এখানে ক্লিক করুন</p>
 
+    <!-- পুরো গান বাজার জন্য loop রাখা হয়েছে -->
     <audio id="bgMusic" loop>
         <source src="flute.mp3" type="audio/mpeg">
     </audio>
@@ -102,24 +106,25 @@
         var music = document.getElementById("bgMusic");
         var pic = document.getElementById("pujaPic");
         var msg = document.getElementById("msg");
+        var trigger = document.getElementById("playTrigger");
 
-        function startEverything() {
-            // গান প্লে করা
-            music.play().catch(function(error) {
-                console.log("Play failed:", error);
-            });
+        function startShow() {
+            // ১. ক্লিক করার সাথে সাথে গান শুরু হবে (যা শেষ পর্যন্ত চলবে)
+            music.play().catch(e => console.log("Music error:", e));
+            
+            msg.innerText = "গান শুরু হয়েছে... ৫ সেকেন্ড পর পর্দা খুলবে";
+            msg.style.animation = "none";
 
-            // পর্দার অ্যানিমেশন শুরু করা
-            pic.classList.add("start-animation");
-
-            // টেক্সট পরিবর্তন বা হাইড করা
-            msg.innerText = "উপভোগ করুন...";
-            msg.style.animation = "none"; 
+            // ২. গান শুরু হওয়ার ঠিক ৫ সেকেন্ড পর পর্দা খোলা শুরু হবে
+            setTimeout(function() {
+                pic.classList.add("curtain-action");
+                msg.innerText = "শুভ পূজা ✨";
+            }, 5000); 
         }
 
-        // ক্লিক বা টাচ করলে একসাথে শুরু হবে
-        document.getElementById("mainContainer").addEventListener('click', startEverything, { once: true });
-        document.getElementById("mainContainer").addEventListener('touchstart', startEverything, { once: true });
+        // ইউজার ক্লিক করলে পুরো প্রসেস শুরু হবে
+        trigger.addEventListener('click', startShow, { once: true });
+        msg.addEventListener('click', startShow, { once: true });
     </script>
 
 </body>
