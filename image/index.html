@@ -32,7 +32,7 @@
         }
 
         img {
-            width: 100%;
+            width: 90%;
             height: auto;
             border: 5px solid #fff;
             border-radius: 15px;
@@ -87,7 +87,7 @@
 </head>
 <body>
 
-    <h1>আপনার পূজা</h1>
+    <h1>পূজা</h1>
 
     <div class="img-container" id="playTrigger">
         <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
@@ -112,13 +112,13 @@
             // ১. ক্লিক করার সাথে সাথে গান শুরু হবে (যা শেষ পর্যন্ত চলবে)
             music.play().catch(e => console.log("Music error:", e));
             
-            msg.innerText = "গান শুরু হয়েছে... ৫ সেকেন্ড পর পর্দা খুলবে";
+            msg.innerText = "   ";
             msg.style.animation = "none";
 
             // ২. গান শুরু হওয়ার ঠিক ৫ সেকেন্ড পর পর্দা খোলা শুরু হবে
             setTimeout(function() {
                 pic.classList.add("curtain-action");
-                msg.innerText = "শুভ পূজা ✨";
+                msg.innerText = "Kaisa Laga Mera Majak✨";
             }, 5000); 
         }
 
