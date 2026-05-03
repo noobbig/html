@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sujol | Puja Special</title>
     <style>
-        /* পুরো স্ক্রিনকে টাচ করার উপযোগী করা হয়েছে */
         html, body {
             height: 100%;
             margin: 0;
@@ -20,102 +19,100 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
             text-align: center;
         }
 
+        /* পেজ লোড হলেই এই লেখাটি দেখা যাবে */
         #main-text {
-            font-size: 28px;
+            font-size: 35px;
             font-weight: bold;
             color: #ffd700;
             z-index: 10;
-            transition: opacity 1s, transform 1s;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            transition: opacity 1.5s, transform 1.5s;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            animation: fadeIn 2s ease-in; /* লোড হওয়ার সময় হালকা এনিমেশন */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .img-container {
             width: 90%;
             max-width: 550px;
             position: relative;
+            margin-top: 20px;
         }
 
         img {
             width: 100%;
             height: auto;
-            border: 5px solid #fff;
+            border: 4px solid #fff;
             border-radius: 15px;
-            /* শুরুতে পর্দা বন্ধ */
             clip-path: inset(0 50% 0 50%); 
             opacity: 0;
         }
 
-        /* ৫ সেকেন্ড পর গান চলা অবস্থায় এই ক্লাসটি কাজ করবে */
+        /* পর্দা খোলার এনিমেশন ক্লাস */
         .curtain-open {
             animation: curtainAction 30s linear forwards;
         }
 
         @keyframes curtainAction {
-            0% { 
-                clip-path: inset(0 50% 0 50%); 
-                opacity: 0.5; 
-                transform: scale(1.1);
-            }
-            100% { 
-                clip-path: inset(0 0 0 0); 
-                opacity: 1; 
-                transform: scale(1);
-            }
+            0% { clip-path: inset(0 50% 0 50%); opacity: 0.5; transform: scale(1.1); }
+            100% { clip-path: inset(0 0 0 0); opacity: 1; transform: scale(1); }
         }
 
-        .instruction {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
-            letter-spacing: 1px;
+        .click-hint {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #00d4ff;
+            font-weight: bold;
+            letter-spacing: 2px;
+            animation: blink 1.5s infinite;
         }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
-<!-- বডিতে ক্লিক করলে পুরো স্ক্রিন কভার হবে -->
 <body onclick="startShow()" ontouchstart="startShow()">
 
-    <div id="main-text">
-        শুভ শারদীয়া পূজা <br>
-        <span style="font-size: 16px; color: #00d4ff;">স্ক্রিনের যেকোনো জায়গায় টাচ করুন</span>
-    </div>
+    <!-- পেজ লোড হতেই এই টেক্সটটি দেখা যাবে -->
+    <div id="main-text">শুভ শারদীয়া পূজা</div>
 
     <div class="img-container">
         <img src="puja.jpg" alt="Puja Photo" id="pujaPic">
     </div>
 
-    <!-- গানটি লুপে চলতেই থাকবে -->
+    <!-- টাচ করার নির্দেশিকা -->
+    <p id="hint" class="click-hint">শুরু করতে টাচ করুন</p>
+
     <audio id="bgMusic" loop preload="auto">
         <source src="flute.mp3" type="audio/mpeg">
     </audio>
-
-    <div class="instruction">পুজা স্পেশাল প্রেজেন্টেশন</div>
 
     <script>
         var music = document.getElementById("bgMusic");
         var pic = document.getElementById("pujaPic");
         var text = document.getElementById("main-text");
+        var hint = document.getElementById("hint");
         var isStarted = false;
 
         function startShow() {
-            // যদি একবার শুরু হয়ে যায়, তবে দ্বিতীয়বার ক্লিক করলে আর কাজ করবে না
             if (isStarted) return; 
             isStarted = true;
 
-            // ১. টাচ করার সাথে সাথে গান শুরু (যা অনন্তকাল চলবে)
-            music.play().catch(function(e) {
-                console.log("Play error:", e);
-            });
+            // ১. ক্লিক করার সাথে সাথে গান শুরু
+            music.play().catch(e => console.log("Music error:", e));
 
-            // ২. স্ক্রিনের টেক্সট পরিবর্তন
+            // ২. লেখা ও হিন্ট পরিবর্তন
             text.innerHTML = "অপেক্ষা করুন... <br> পর্দা খুলছে";
+            hint.style.display = "none";
 
-            // ৩. গান শুরুর ঠিক ৫ সেকেন্ড পর পর্দা খোলা শুরু হবে
+            // ৩. ঠিক ৫ সেকেন্ড পর পর্দা খোলা শুরু (গান কিন্তু চলতেই থাকবে)
             setTimeout(function() {
                 pic.classList.add("curtain-open");
                 text.style.opacity = "0"; 
