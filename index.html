@@ -4,16 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>আমার প্রজেক্ট</title>
-   
-         
+    <style>
+        /* পুরো পেজের সেটআপ */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f7f6;
+        }
+
+        /* কার্ডের ডিজাইন */
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .image-placeholder {
+            margin-bottom: 30px;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* বড় এবং ইফেক্টিভ NEXT বাটন */
+        .btn {
+            display: inline-block;
+            padding: 18px 50px;          /* বাটন বড় করা হয়েছে */
+            background: linear-gradient(45deg, #ff416c, #ff4b2b); /* আকর্ষণীয় লাল-অরেঞ্জ গ্রেডিয়েন্ট */
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;         /* স্টাইলিশ রাউন্ড শেপ */
+            font-size: 24px;             /* টেক্সট অনেক বড় করা হয়েছে */
+            font-weight: 900;            /* অনেক মোটা অক্ষর */
+            text-transform: uppercase;   /* সব বড় হাতের */
+            letter-spacing: 3px;         /* অক্ষরের মাঝে গ্যাপ */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* স্মুথ বাউন্সি ইফেক্ট */
+            box-shadow: 0 8px 20px rgba(255, 75, 43, 0.4);
+        }
+
+        /* মাউস নিলে যে পরিবর্তন হবে */
+        .btn:hover {
+            transform: scale(1.15);      /* বাটনটি আরও বড় হয়ে ভেসে উঠবে */
+            box-shadow: 0 12px 30px rgba(255, 75, 43, 0.6);
+            letter-spacing: 5px;         /* হোভার করলে অক্ষর আরও ছড়িয়ে যাবে */
+        }
+
+        /* ক্লিক করার সময় ইফেক্ট */
+        .btn:active {
+            transform: scale(0.95);
+        }
+    </style>
 </head>
 <body>
 
     <div class="card">
-        <h1>গিটহাব ওয়েবসাইট</h1>
-        <p> <strong>image</strong></p>
+        <h1>Take Easy</h1>
         
-        <a href="image/index.html" class="btn">ইমেজ ফোল্ডারের ফাইলটি দেখুন</a>
+        <div class="image-placeholder">
+            <strong>[ Image Here ]</strong>
+        </div>
+
+        <!-- আপনার কাঙ্ক্ষিত বড় NEXT বাটন -->
+        <a href="image/index.html" class="btn">NEXT</a>
     </div>
 
 </body>
