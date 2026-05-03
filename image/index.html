@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sujol | Puja Animation</title>
+    <title>Sujol | Puja Animation & Music</title>
     <style>
         body {
             margin: 0;
@@ -18,16 +18,13 @@
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
-            /* লেখার জন্য এনিমেশন */
             animation: fadeInDown 1s ease-in;
         }
 
-        /* ছবির কন্টেইনার */
         .img-container {
             display: inline-block;
             width: 90%;
             max-width: 600px;
-            perspective: 1000px; /* 3D ইফেক্টের জন্য */
         }
 
         img {
@@ -36,74 +33,43 @@
             border: 5px solid #fff;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-            
-            /* এনিমেশন যুক্ত করা হয়েছে */
-            animation: 
-                entrance 1.5s ease-out, 
-                floating 3s ease-in-out infinite;
-            
-            transition: transform 0.3s ease;
+            animation: entrance 1.5s ease-out, floating 3s ease-in-out infinite;
         }
 
-        /* মাউস নিলে ছবি বড় হবে */
-        img:hover {
-            transform: scale(1.03);
-            border-color: #00d4ff;
+        /* মিউজিক বাটন স্টাইল */
+        #musicBtn {
+            margin-top: 25px;
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            background: #00d4ff;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+            transition: 0.3s;
         }
 
         .back-link {
-            margin-top: 50px;
-            display: inline-block;
-            color: #00d4ff;
+            margin-top: 40px;
+            display: block;
+            color: #aaa;
             text-decoration: none;
-            font-size: 18px;
-            transition: 0.3s;
-            animation: fadeIn 2s ease-in;
+            font-size: 16px;
         }
 
-        .back-link:hover {
-            color: #fff;
-            letter-spacing: 1px;
-        }
-
-        /* --- অ্যানিমেশন কী-ফ্রেম সমূহ --- */
-
-        /* ১. শুরুতে ছবিটা জুম হয়ে আসবে */
+        /* অ্যানিমেশনসমূহ */
         @keyframes entrance {
-            from {
-                opacity: 0;
-                transform: scale(0.8) translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        /* ২. ছবিটা সবসময় ভাসতে থাকবে */
         @keyframes floating {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
-
-        /* ৩. উপর থেকে লেখা আসবে */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
     </style>
 </head>
 <body>
@@ -111,12 +77,44 @@
     <h1>আপনার পূজা</h1>
 
     <div class="img-container">
-        <!-- আপনার ছবির নাম পূজা.jpg ঠিক থাকলে এটি কাজ করবে -->
         <img src="puja.jpg" alt="Puja Photo">
     </div>
 
     <br>
+
+    <!-- অনলাইন মিউজিক প্লেয়ার -->
+    <audio id="bgMusic" loop>
+        <!-- এখানে একটি অনলাইন স্যাম্পল মিউজিক লিঙ্ক দেওয়া হয়েছে -->
+        <source src="https://soundhelix.com" type="audio/mpeg">
+    </audio>
+
+    <button id="musicBtn" onclick="toggleMusic()">🎵 মিউজিক চালান</button>
+
     <a href="../index.html" class="back-link">← মেইন পেজে ফিরে যান</a>
+
+    <script>
+        var music = document.getElementById("bgMusic");
+        var btn = document.getElementById("musicBtn");
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "⏸ মিউজিক থামান";
+                btn.style.background = "#ff4b2b";
+            } else {
+                music.pause();
+                btn.innerHTML = "🎵 মিউজিক চালান";
+                btn.style.background = "#00d4ff";
+            }
+        }
+
+        // স্ক্রিনের যেকোনো জায়গায় প্রথম ক্লিকের সাথে গান শুরু হবে
+        window.addEventListener('click', function() {
+            if (music.paused) {
+                toggleMusic();
+            }
+        }, { once: true });
+    </script>
 
 </body>
 </html>
