@@ -21,7 +21,6 @@
             color: #ffd700;
         }
 
-        /* কন্টেইনারকে রিলেটিভ করা হয়েছে যাতে লেখা ছবির ওপর বসে */
         .img-container {
             position: relative;
             display: inline-block;
@@ -44,7 +43,7 @@
             display: block;
         }
 
-        /* ছবির ওপরের টেক্সট স্টাইল */
+        /* ছবির ওপরে থাকা ইনস্ট্রাকশন */
         .instruction {
             position: absolute;
             top: 50%;
@@ -58,7 +57,18 @@
             z-index: 10;
             animation: blink 1.5s infinite;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            pointer-events: none; /* ক্লিক যেন কন্টেইনারে লাগে */
+            pointer-events: none;
+        }
+
+        /* ছবির নিচে আসার জন্য নতুন স্টাইল */
+        .msg-bottom {
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
+            transform: none !important;
+            margin-top: 20px !important;
+            color: #ffd700 !important;
+            animation: none !important;
         }
 
         .curtain-action {
@@ -93,6 +103,9 @@
         <p id="msg" class="instruction">শুরু করতে এখানে ক্লিক করুন</p>
     </div>
 
+    <!-- ছবির নিচে আসার জন্য একটি খালি জায়গা রাখা হলো -->
+    <div id="bottomMsgContainer"></div>
+
     <audio id="bgMusic" loop>
         <source src="flute.mp3" type="audio/mpeg">
     </audio>
@@ -104,23 +117,22 @@
         var pic = document.getElementById("pujaPic");
         var msg = document.getElementById("msg");
         var trigger = document.getElementById("playTrigger");
+        var bottomContainer = document.getElementById("bottomMsgContainer");
 
         function startShow() {
-            // ১. ক্লিক করলে গান বাজবে
             music.play().catch(e => console.log("Music error:", e));
-
-            // ২. ক্লিক করার সাথে সাথে টেক্সট একদম ভ্যানিশ হয়ে যাবে
+            
+            // ক্লিক করার সাথে সাথে উপরের টেক্সট ভ্যানিশ
             msg.style.display = "none";
 
-            // ৩. ৫ সেকেন্ড পর পর্দা খুলবে এবং নতুন টেক্সট আসবে
             setTimeout(function() {
                 pic.classList.add("curtain-action");
                 
-                // পর্দা খোলার সময় মেসেজটি আবার দেখাবে
+                // লেখাটিকে ছবির কন্টেইনার থেকে বের করে নিচে নিয়ে আসা
+                bottomContainer.appendChild(msg); 
                 msg.innerText = "Kaisa Laga Mera Majak✨";
+                msg.classList.add("msg-bottom");
                 msg.style.display = "block";
-                msg.style.animation = "none";
-                msg.style.top = "90%"; // মেসেজটি ছবির নিচে নামিয়ে দেওয়া হলো
             }, 5000);
         }
 
